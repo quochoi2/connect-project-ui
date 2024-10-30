@@ -1,1 +1,85 @@
-<p>history-action-view works!</p>
+<div>
+  <div class="flex justify-between w-full items-center">
+    <div>
+      <h3 class="text-[10px] font-semibold">Connection history</h3>
+    </div>
+    <div class="flex justify-between items-center gap-5">
+      <div>
+        <button
+          mat-flat-button
+          class="mb-[18px]"
+          (click)="goToAdminDashboard()"
+        >
+          Back
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <ng-container matColumnDef="connect_id">
+      <th mat-header-cell *matHeaderCellDef>Connect</th>
+      <td mat-cell *matCellDef="let element" class="truncate-note">
+        <span matTooltip="{{ element.connect_id }}">{{
+          element.connect_id
+        }}</span>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef>Action</th>
+      <td mat-cell *matCellDef="let element" class="truncate-note">
+        <span matTooltip="{{ element.action }}">{{ element.action }}</span>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="moderator">
+      <th mat-header-cell *matHeaderCellDef>Moderator</th>
+      <td mat-cell *matCellDef="let element" class="truncate-note">
+        <span matTooltip="{{ element.moderator }}">{{
+          element.moderator
+        }}</span>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="updatedAt">
+      <th mat-header-cell *matHeaderCellDef>Date Time</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.updatedAt | date : "short" }}
+      </td>
+    </ng-container>
+
+    <!-- <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Actions</th>
+      <td mat-cell *matCellDef="let element">
+        <button
+          *ngIf="element.pending === 1"
+          class="text-blue-600 hover:underline"
+          (click)="handleOpenAndCloseConnect(element, 'open')"
+        >
+          Open
+        </button>
+
+        <button
+          *ngIf="element.pending === 0"
+          class="text-red-600 hover:underline"
+          (click)="handleOpenAndCloseConnect(element, 'close')"
+        >
+          Close
+        </button>
+      </td>
+    </ng-container> -->
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+
+  <mat-paginator
+    [length]="totalItems"
+    [pageSize]="8"
+    [pageSizeOptions]="[5, 8, 10, 25, 100]"
+    showFirstLastButtons
+    (page)="onPageChange($event)"
+  >
+  </mat-paginator>
+</div>
