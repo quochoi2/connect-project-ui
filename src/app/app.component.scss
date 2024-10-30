@@ -1,0 +1,15 @@
+.spinner-container {
+  position: fixed; /* Giữ spinner cố định trên màn hình */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Căn giữa spinner */
+  z-index: 1000; /* Đảm bảo spinner ở trên các phần tử khác */
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.8
+  ); /* Màu nền trong suốt (tuỳ chọn) */
+  padding: 20px; /* Khoảng cách xung quanh spinner (tuỳ chọn) */
+  border-radius: 10px; /* Bo góc nền (tuỳ chọn) */
+}

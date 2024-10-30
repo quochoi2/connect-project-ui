@@ -1,5 +1,12 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import {
+  Router,
+  NavigationStart,
+  NavigationEnd,
+  NavigationCancel,
+  NavigationError,
+} from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -8,4 +15,32 @@ import { RouterOutlet } from '@angular/router';
 })
 export class AppComponent {
   title = 'connect-style';
+
+  isLoading: boolean = false;
+  loadingTimeout: any;
+
+  constructor(private router: Router) {
+    this.router.events
+      .pipe(
+        filter(
+          (event) =>
+            event instanceof NavigationStart ||
+            event instanceof NavigationEnd ||
+            event instanceof NavigationCancel ||
+            event instanceof NavigationError
+        )
+      )
+      .subscribe((event) => {
+        if (event instanceof NavigationStart) {
+          this.isLoading = true;
+
+          this.loadingTimeout = setTimeout(() => {
+            this.isLoading = false;
+          }, 3000);
+        } else {
+          clearTimeout(this.loadingTimeout);
+          this.isLoading = false;
+        }
+      });
+  }
 }

@@ -3,15 +3,42 @@ import { RouterModule, Routes } from '@angular/router';
 import { DefaultLayoutComponent } from './layouts/default-layout/default-layout.component';
 import { SigninComponent } from './pages/auth/signin/signin.component';
 import { SignupComponent } from './pages/auth/signup/signup.component';
+import { HistoryActionViewComponent } from './pages/admin/admin-dashboard/history-action-view/history-action-view.component';
+import { AdminDashboardComponent } from './pages/admin/admin-dashboard/admin-dashboard.component';
+import { UserDashboardComponent } from './pages/user/user-dashboard/user-dashboard.component';
+import { UnauthorizedComponent } from './layouts/unauthorized/unauthorized.component';
 
-const routes: Routes = [
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
+export const routes: Routes = [
+  { path: '', redirectTo: 'sign-in', pathMatch: 'full' },
+  // { path: '**', redirectTo: 'sign-up' },
+  {
+    path: 'sign-in',
+    component: SigninComponent,
+  },
+  {
+    path: 'sign-up',
+    component: SignupComponent,
+  },
   {
     path: '',
     component: DefaultLayoutComponent,
     children: [
-      { path: 'login', component: SigninComponent },
-      { path: 'signup', component: SignupComponent },
+      {
+        path: 'admin-dashboard',
+        component: AdminDashboardComponent,
+      },
+      {
+        path: 'history-action-view',
+        component: HistoryActionViewComponent,
+      },
+      {
+        path: 'user-dashboard',
+        component: UserDashboardComponent,
+      },
+      {
+        path: 'unauthorized',
+        component: UnauthorizedComponent,
+      },
     ],
   },
 ];
