@@ -6,9 +6,15 @@ import { SigninComponent } from './pages/auth/signin/signin.component';
 import { SignupComponent } from './pages/auth/signup/signup.component';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routes';
+import { DefaultLayoutComponent } from './layouts/default-layout/default-layout.component';
 
 @NgModule({
-  declarations: [AppComponent, SigninComponent, SignupComponent],
+  declarations: [
+    AppComponent,
+    SigninComponent,
+    SignupComponent,
+    DefaultLayoutComponent,
+  ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
