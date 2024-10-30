@@ -33,4 +33,16 @@ export class connectService {
       params: { page, limit },
     });
   }
+
+  async openConnect(id: number, moderator: string) {
+    return await axios.post(this.connectEndpoint + '/' + id + '/open', null, {
+      params: {
+        moderator: moderator,
+      },
+    });
+  }
+
+  async closeConnect(id: number) {
+    return await axios.post(this.connectEndpoint + '/' + id + '/close');
+  }
 }

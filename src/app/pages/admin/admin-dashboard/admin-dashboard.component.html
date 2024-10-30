@@ -1,11 +1,17 @@
 <div>
   <div class="flex justify-between w-full items-center">
     <div>
-      <h3 class="text-[10px] font-semibold">Admin connects</h3>
+      <h3 class="text-[10px] font-semibold">Admin | Connection</h3>
     </div>
     <div class="flex justify-between items-center gap-5">
       <div>
-        <button mat-flat-button class="mb-[18px]">History actions</button>
+        <button
+          mat-flat-button
+          class="mb-[18px]"
+          (click)="goToHistoryActions()"
+        >
+          History actions
+        </button>
       </div>
       <div>
         <form class="example-form">
@@ -33,54 +39,89 @@
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
     <ng-container matColumnDef="idFirst">
       <th mat-header-cell *matHeaderCellDef>First IP</th>
-      <td mat-cell *matCellDef="let element">{{ element.idFirst }}</td>
+      <td mat-cell *matCellDef="let element" class="truncate-note">
+        <span matTooltip="{{ element.idFirst }}">{{ element.idFirst }}</span>
+      </td>
     </ng-container>
 
     <ng-container matColumnDef="portSource">
       <th mat-header-cell *matHeaderCellDef>Port Source</th>
-      <td mat-cell *matCellDef="let element">{{ element.portSource }}</td>
+      <td mat-cell *matCellDef="let element" class="truncate-note">
+        <span matTooltip="{{ element.portSource }}">{{
+          element.portSource
+        }}</span>
+      </td>
     </ng-container>
 
     <ng-container matColumnDef="idLast">
       <th mat-header-cell *matHeaderCellDef>Last IP</th>
-      <td mat-cell *matCellDef="let element">{{ element.idLast }}</td>
+      <td mat-cell *matCellDef="let element" class="truncate-note">
+        <span matTooltip="{{ element.idLast }}">{{ element.idLast }}</span>
+      </td>
     </ng-container>
 
     <ng-container matColumnDef="portTo">
       <th mat-header-cell *matHeaderCellDef>Port To</th>
-      <td mat-cell *matCellDef="let element">{{ element.portTo }}</td>
+      <td mat-cell *matCellDef="let element" class="truncate-note">
+        <span matTooltip="{{ element.portTo }}">{{ element.portTo }}</span>
+      </td>
     </ng-container>
 
     <ng-container matColumnDef="pending">
       <th mat-header-cell *matHeaderCellDef>Pending</th>
-      <td mat-cell *matCellDef="let element">{{ element.pending }}</td>
+      <td mat-cell *matCellDef="let element" class="">
+        <fa-icon
+          class="ml-[20px]"
+          [icon]="
+            element.pending === 1
+              ? faService.icons.faEyeSlash
+              : faService.icons.faEye
+          "
+        >
+        </fa-icon>
+      </td>
     </ng-container>
 
     <ng-container matColumnDef="moderator">
       <th mat-header-cell *matHeaderCellDef>Moderator</th>
-      <td mat-cell *matCellDef="let element">{{ element.moderator }}</td>
+      <td mat-cell *matCellDef="let element" class="truncate-note">
+        <span matTooltip="{{ element.moderator }}">{{
+          element.moderator
+        }}</span>
+      </td>
     </ng-container>
 
     <ng-container matColumnDef="note">
       <th mat-header-cell *matHeaderCellDef>Note</th>
-      <td mat-cell *matCellDef="let element">{{ element.note }}</td>
+      <td mat-cell *matCellDef="let element" class="truncate-note">
+        <span matTooltip="{{ element.note }}">{{ element.note }}</span>
+      </td>
     </ng-container>
 
-    <ng-container matColumnDef="createdAt">
+    <ng-container matColumnDef="updatedAt">
       <th mat-header-cell *matHeaderCellDef>Date Time</th>
       <td mat-cell *matCellDef="let element">
-        {{ element.createdAt | date : "short" }}
+        {{ element.updatedAt | date : "short" }}
       </td>
     </ng-container>
 
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef>Actions</th>
       <td mat-cell *matCellDef="let element">
-        <button mat-icon-button>
-          <fa-icon [icon]="faService.icons.faEdit"></fa-icon>
+        <button
+          *ngIf="element.pending === 1"
+          class="text-blue-600 hover:underline"
+          (click)="handleOpenAndCloseConnect(element, 'open')"
+        >
+          Open
         </button>
-        <button mat-icon-button color="warn">
-          <fa-icon [icon]="faService.icons.faTrash"></fa-icon>
+
+        <button
+          *ngIf="element.pending === 0"
+          class="text-red-600 hover:underline"
+          (click)="handleOpenAndCloseConnect(element, 'close')"
+        >
+          Close
         </button>
       </td>
     </ng-container>

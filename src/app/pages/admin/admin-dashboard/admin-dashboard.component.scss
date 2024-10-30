@@ -11,3 +11,10 @@ table {
 .example-full-width {
   width: 100%;
 }
+
+.truncate-note {
+  max-width: 110px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

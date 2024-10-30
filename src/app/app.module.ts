@@ -32,6 +32,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
@@ -72,6 +73,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     MatFormFieldModule,
     FormsModule,
     MatPaginatorModule,
+    MatTooltipModule,
   ],
   providers: [provideAnimationsAsync()],
   bootstrap: [AppComponent],

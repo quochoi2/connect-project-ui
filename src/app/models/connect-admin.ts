@@ -13,3 +13,12 @@ export interface IConnectAdmin {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface IConnectAdminHistory {
+  id: number;
+  action: string;
+  moderator: string;
+  connect_id: number;
+  createdAt: string;
+  updatedAt: string;
+}

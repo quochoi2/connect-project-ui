@@ -1,9 +1,13 @@
-import { Component, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FontAwesomeService } from '../../../shared/icon';
 import { IConnectAdmin } from '../../../models/connect-admin';
 import { connectService } from '../../../services/connectService';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
+import { Router } from '@angular/router';
+import { historyService } from '../../../services/historyService';
+import { authService } from '../../../services/authService';
+import { formatDate } from '../../../utils';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -12,11 +16,16 @@ import { MatPaginator } from '@angular/material/paginator';
 })
 export class AdminDashboardComponent {
   dataSource = new MatTableDataSource<IConnectAdmin>([]);
-  totalItems = 0;
+  currentPage: number = 1;
+  totalItems: number = 0;
+  userName: string = '';
 
   constructor(
     public faService: FontAwesomeService,
-    private connectService: connectService
+    private connectService: connectService,
+    private historyService: historyService,
+    private authService: authService,
+    private router: Router
   ) {}
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -29,11 +38,12 @@ export class AdminDashboardComponent {
     'pending',
     'moderator',
     'note',
-    'createdAt',
+    'updatedAt',
     'actions',
   ];
 
   async ngOnInit() {
+    this.userName = this.authService.getUser().name;
     await this.loadConnects(1, 8);
   }
 
@@ -42,18 +52,37 @@ export class AdminDashboardComponent {
   }
 
   async loadConnects(page: number, limit: number) {
-    try {
-      const response = await this.connectService.getAllConnects(page, limit);
-      this.dataSource = response.data.data;
-      this.totalItems = response.data.totalItems;
-    } catch (error) {
-      console.error('Error loading connects:', error);
+    const response = await this.connectService.getAllConnects(page, limit);
+    this.dataSource = response.data.data;
+    // .map((item: any) => ({
+    //   ...item,
+    //   updatedAt: formatDate(item.updatedAt),
+    // }));
+    this.currentPage = page;
+    this.totalItems = response.data.totalItems;
+  }
+
+  async handleOpenAndCloseConnect(element: any, action: 'open' | 'close') {
+    if (action == 'open') {
+      await this.connectService.openConnect(element.id, this.userName);
+    } else {
+      await this.connectService.closeConnect(element.id);
     }
+    await this.historyService.historyAddConnect({
+      action: action,
+      moderator: this.userName,
+      connect_id: element.id,
+    });
+    this.loadConnects(this.currentPage, 8);
+  }
+
+  goToHistoryActions() {
+    this.router.navigate(['/history-action-view']);
   }
 
   onPageChange(event: any) {
-    const page = event.pageIndex + 1;
+    this.currentPage = event.pageIndex + 1;
     const pageSize = event.pageSize;
-    this.loadConnects(page, pageSize);
+    this.loadConnects(this.currentPage, pageSize);
   }
 }
