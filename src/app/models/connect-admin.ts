@@ -15,7 +15,6 @@ export interface IConnectAdmin {
 }
 
 export interface IConnectAdminHistory {
-  id: number;
   action: string;
   moderator: string;
   connect_id: number;

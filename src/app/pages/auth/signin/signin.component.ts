@@ -27,10 +27,10 @@ export class SigninComponent {
 
       if (user.role == 1) {
         this.router.navigate(['/admin-dashboard']);
-        this.toastr.success('Login successful!', 'Admin Dashboard');
+        this.toastr.success('Login successfully!', 'Admin Dashboard');
       } else if (user.role == 0) {
         this.router.navigate(['/user-dashboard']);
-        this.toastr.success('Login successful!', 'User Dashboard');
+        this.toastr.success('Login successfully!', 'User Dashboard');
       }
     } catch (error) {
       this.toastr.error('Invalid email or password!', 'Login Failed');

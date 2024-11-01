@@ -10,39 +10,55 @@ export class connectService {
 
   constructor() {}
 
+  private buildUrl(id?: number | string, action?: string) {
+    return `${this.connectEndpoint}${id ? `/${id}` : ''}${
+      action ? `/${action}` : ''
+    }`;
+  }
+
   async getAllConnects(page: number, limit: number) {
-    return await axios.get(this.connectEndpoint, {
-      params: { page, limit },
-    });
+    return axios.get(this.connectEndpoint, { params: { page, limit } });
   }
-
-  async getAllConnectByUserId(page: number, limit: number, userId: number) {
-    return await axios.get(this.connectEndpoint + '/user/' + userId, {
-      params: { page, limit },
-    });
-  }
-
-  // async getAllHistoryConnects(page: number, limit: number) {
-  //   return await axios.get(this.connectEndpoint + '/', {
-  //     params: { page, limit },
-  //   });
-  // }
 
   async getAllConnectAfterDeleted(page: number, limit: number) {
-    return await axios.get(this.connectEndpoint + '/getAllAfterDeleted', {
+    return axios.get(this.buildUrl('getAllAfterDeleted'), {
       params: { page, limit },
     });
   }
 
   async openConnect(id: number, moderator: string) {
-    return await axios.post(this.connectEndpoint + '/' + id + '/open', null, {
-      params: {
-        moderator: moderator,
-      },
+    return axios.post(this.buildUrl(id, 'open'), null, {
+      params: { moderator },
     });
   }
 
   async closeConnect(id: number) {
-    return await axios.post(this.connectEndpoint + '/' + id + '/close');
+    return axios.post(this.buildUrl(id, 'close'));
+  }
+
+  async getAllConnectByUserId(page: number, limit: number, userId: number) {
+    return axios.get(this.buildUrl(`user/${userId}`), {
+      params: { page, limit },
+    });
+  }
+
+  async createConnect(data: any, userId: number) {
+    return axios.post(this.connectEndpoint, { ...data, user_id: userId });
+  }
+
+  async updateConnect(data: any) {
+    return axios.put(this.buildUrl(data.id), data);
+  }
+
+  async deleteConnect(id: number) {
+    return axios.delete(this.buildUrl(id));
+  }
+
+  async softDeleteConnect(id: number) {
+    return axios.delete(this.buildUrl(id, 'softDelete'));
+  }
+
+  async restoreConnect(id: number) {
+    return axios.post(this.buildUrl(id, 'restore'));
   }
 }

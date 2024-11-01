@@ -32,9 +32,8 @@
     <div class="p-4">
       <li class="list-none">
         <a
-          routerLink="/sign-in"
-          routerLinkActive="bg-gray-700 rounded-md"
-          class="block px-4 py-2 hover:bg-gray-700 hover:rounded-md"
+          (click)="logOut()"
+          class="block px-4 py-2 hover:bg-gray-700 hover:rounded-md cursor-pointer"
           >Log out</a
         >
       </li>

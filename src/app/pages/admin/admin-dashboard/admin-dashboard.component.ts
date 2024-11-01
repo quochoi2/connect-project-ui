@@ -7,7 +7,6 @@ import { MatPaginator } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import { historyService } from '../../../services/historyService';
 import { authService } from '../../../services/authService';
-import { formatDate } from '../../../utils';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -42,9 +41,12 @@ export class AdminDashboardComponent {
     'actions',
   ];
 
-  async ngOnInit() {
+  ngOnInit() {
     this.userName = this.authService.getUser().name;
-    await this.loadConnects(1, 8);
+    this.loadConnects(this.currentPage, 8);
+    setInterval(() => {
+      this.loadConnects(this.currentPage, 8);
+    }, 20000); // mini second
   }
 
   ngAfterViewInit() {
