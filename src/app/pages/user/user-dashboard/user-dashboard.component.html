@@ -14,13 +14,34 @@
         </button>
       </div>
       <div>
-        <button
-          mat-flat-button
-          class="mb-[18px]"
-          (click)="goToConnectionTrash()"
-        >
-          Connection trash
+        <button class="mb-[16px] relative" (click)="toggleNofication()">
+          <fa-icon [icon]="faService.icons.faBell" class="text-3xl"></fa-icon>
+          <span
+            *ngIf="hasNewNotification"
+            class="absolute top-[-5px] right-[-5px] w-2.5 h-2.5 bg-red-600 rounded-full z-20"
+          ></span>
         </button>
+
+        <!-- Notifications -->
+        <div
+          *ngIf="showNotifications"
+          class="absolute ml-[-30px] bg-white border shadow-lg rounded-md p-4 mt-2 w-80 z-10 max-h-64 overflow-y-auto"
+        >
+          <ul>
+            <li
+              *ngIf="notifications.length === 0"
+              class="py-2 text-center text-gray-500"
+            >
+              No notifications available.
+            </li>
+            <li
+              *ngFor="let notification of notifications"
+              class="py-2 border-b"
+            >
+              {{ notification }}
+            </li>
+          </ul>
+        </div>
       </div>
       <div>
         <form class="example-form">
@@ -45,94 +66,173 @@
     </div>
   </div>
 
-  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-    <ng-container matColumnDef="idFirst">
-      <th mat-header-cell *matHeaderCellDef>First IP</th>
-      <td mat-cell *matCellDef="let element" class="truncate-note">
-        <span matTooltip="{{ element.idFirst }}">{{ element.idFirst }}</span>
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="portSource">
-      <th mat-header-cell *matHeaderCellDef>Port Source</th>
-      <td mat-cell *matCellDef="let element" class="truncate-note">
-        <span matTooltip="{{ element.portSource }}">{{
-          element.portSource
-        }}</span>
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="idLast">
-      <th mat-header-cell *matHeaderCellDef>Last IP</th>
-      <td mat-cell *matCellDef="let element" class="truncate-note">
-        <span matTooltip="{{ element.idLast }}">{{ element.idLast }}</span>
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="portTo">
-      <th mat-header-cell *matHeaderCellDef>Port To</th>
-      <td mat-cell *matCellDef="let element" class="truncate-note">
-        <span matTooltip="{{ element.portTo }}">{{ element.portTo }}</span>
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="pending">
-      <th mat-header-cell *matHeaderCellDef>Pending</th>
-      <td mat-cell *matCellDef="let element" class="">
-        <fa-icon
-          class="ml-[20px]"
-          [icon]="
-            element.pending === 1
-              ? faService.icons.faEyeSlash
-              : faService.icons.faEye
-          "
+  <div class="overflow-x-auto">
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+      <ng-container matColumnDef="idFirst">
+        <th mat-header-cell *matHeaderCellDef>First IP</th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          class="truncate-note"
+          style="padding: 10px"
         >
-        </fa-icon>
-      </td>
-    </ng-container>
+          <span matTooltip="{{ element.idFirst }}">{{ element.idFirst }}</span>
+        </td>
+      </ng-container>
 
-    <ng-container matColumnDef="moderator">
-      <th mat-header-cell *matHeaderCellDef>Moderator</th>
-      <td mat-cell *matCellDef="let element" class="truncate-note">
-        <span matTooltip="{{ element.moderator }}">{{
-          element.moderator
-        }}</span>
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="note">
-      <th mat-header-cell *matHeaderCellDef>Note</th>
-      <td mat-cell *matCellDef="let element" class="truncate-note">
-        <span matTooltip="{{ element.note }}">{{ element.note }}</span>
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="updatedAt">
-      <th mat-header-cell *matHeaderCellDef>Date Time</th>
-      <td mat-cell *matCellDef="let element">
-        {{ element.updatedAt | date : "short" }}
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="actions">
-      <th mat-header-cell *matHeaderCellDef>Actions</th>
-      <td mat-cell *matCellDef="let element">
-        <button mat-icon-button (click)="handleUpdateConnect(element)">
-          <fa-icon [icon]="faService.icons.faEdit"></fa-icon>
-        </button>
-        <button
-          mat-icon-button
-          color="warn"
-          (click)="handleSoftDeleteConnect(element.id)"
+      <ng-container matColumnDef="portSource">
+        <th mat-header-cell *matHeaderCellDef>Port Source</th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          class="truncate-note"
+          style="padding: 10px"
         >
-          <fa-icon [icon]="faService.icons.faTrash"></fa-icon>
-        </button>
-      </td>
-    </ng-container>
+          <span matTooltip="{{ element.portSource }}">{{
+            element.portSource
+          }}</span>
+        </td>
+      </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-  </table>
+      <ng-container matColumnDef="idLast">
+        <th mat-header-cell *matHeaderCellDef>Last IP</th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          class="truncate-note"
+          style="padding: 10px"
+        >
+          <span matTooltip="{{ element.idLast }}">{{ element.idLast }}</span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="portTo">
+        <th mat-header-cell *matHeaderCellDef>Port To</th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          class="truncate-note"
+          style="padding: 10px"
+        >
+          <span matTooltip="{{ element.portTo }}">{{ element.portTo }}</span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="serviceType">
+        <th mat-header-cell *matHeaderCellDef>Service Type</th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          class="truncate-note"
+          style="padding: 10px"
+        >
+          <span matTooltip="{{ element.serviceType }}">{{
+            element.serviceType
+          }}</span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="connectType">
+        <th mat-header-cell *matHeaderCellDef>Connect Type</th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          class="truncate-note"
+          style="padding: 10px"
+        >
+          <span matTooltip="{{ element.connectType }}">{{
+            element.connectType
+          }}</span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="moderator">
+        <th mat-header-cell *matHeaderCellDef>Moderator</th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          class="truncate-note"
+          style="padding: 10px"
+        >
+          <span matTooltip="{{ element.moderator }}">{{
+            element.moderator
+          }}</span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="duration">
+        <th mat-header-cell *matHeaderCellDef>Duration</th>
+        <td mat-cell *matCellDef="let element" style="padding: 10px">
+          {{ element.duration }} minutes
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef>Status</th>
+        <td mat-cell *matCellDef="let element" style="padding: 10px">
+          <span
+            [ngClass]="{
+              'bg-green-500': element.status == 0,
+              'bg-red-500': element.status == 1,
+              'bg-yellow-500': element.status == 2,
+            }"
+            class="text-white py-1 px-3 rounded-full"
+          >
+            {{
+              element.status === 0
+                ? "Opened"
+                : element.status === 1
+                ? "Closed"
+                : "Pending"
+            }}
+          </span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="note">
+        <th mat-header-cell *matHeaderCellDef>Note</th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          class="truncate-note"
+          style="padding: 10px"
+        >
+          <span matTooltip="{{ element.note }}">{{ element.note }}</span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="updatedAt">
+        <th mat-header-cell *matHeaderCellDef>Date Time</th>
+        <td mat-cell *matCellDef="let element" style="padding: 10px">
+          {{ element.updatedAt | date : "short" }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-icon-button (click)="handleSendConnect(element)">
+            <fa-icon
+              [icon]="faService.icons.faPaperPlane"
+              class="text-2xl"
+            ></fa-icon>
+          </button>
+          <button mat-icon-button (click)="handleUpdateConnect(element)">
+            <fa-icon [icon]="faService.icons.faEdit" class="text-2xl"></fa-icon>
+          </button>
+          <button mat-icon-buttonn (click)="handleDeleteConnect(element.id)">
+            <fa-icon
+              [icon]="faService.icons.faTrash"
+              class="text-2xl mb-1"
+            ></fa-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </div>
 
   <mat-paginator
     [length]="totalItems"

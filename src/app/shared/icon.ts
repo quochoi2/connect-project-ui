@@ -6,6 +6,8 @@ import {
   faEdit,
   faEye,
   faEyeSlash,
+  faBell,
+  faPaperPlane,
 } from '@fortawesome/free-solid-svg-icons';
 
 @Injectable({
@@ -19,5 +21,7 @@ export class FontAwesomeService {
     faTrash: faTrash,
     faEye: faEye,
     faEyeSlash: faEyeSlash,
+    faBell: faBell,
+    faPaperPlane: faPaperPlane,
   };
 }

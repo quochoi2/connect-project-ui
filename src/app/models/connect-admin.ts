@@ -12,6 +12,7 @@ export interface IConnectAdmin {
   user_id: number;
   createdAt: string;
   updatedAt: string;
+  timeExpired: Date;
 }
 
 export interface IConnectAdminHistory {

@@ -7,6 +7,7 @@ import { HistoryActionViewComponent } from './pages/admin/admin-dashboard/histor
 import { AdminDashboardComponent } from './pages/admin/admin-dashboard/admin-dashboard.component';
 import { UserDashboardComponent } from './pages/user/user-dashboard/user-dashboard.component';
 import { UnauthorizedComponent } from './layouts/unauthorized/unauthorized.component';
+import { AuthGuard } from './auth.guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'sign-in', pathMatch: 'full' },
@@ -24,8 +25,14 @@ export const routes: Routes = [
     component: DefaultLayoutComponent,
     children: [
       {
+        path: 'unauthorized',
+        component: UnauthorizedComponent,
+      },
+      {
         path: 'admin-dashboard',
         component: AdminDashboardComponent,
+        canActivate: [AuthGuard],
+        data: { role: 'admin' },
       },
       {
         path: 'history-action-view',
@@ -34,6 +41,8 @@ export const routes: Routes = [
       {
         path: 'user-dashboard',
         component: UserDashboardComponent,
+        canActivate: [AuthGuard],
+        data: { role: 'user' },
       },
       {
         path: 'unauthorized',

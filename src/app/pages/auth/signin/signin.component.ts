@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { authService } from '../../../services/authService';
 import { Router } from '@angular/router';
 import { toastService } from '../../../shared/toast';
@@ -9,8 +9,8 @@ import { toastService } from '../../../shared/toast';
   styleUrl: './signin.component.scss',
 })
 export class SigninComponent {
-  email = '';
-  password = '';
+  email: string = '';
+  password: string = '';
 
   constructor(
     private authService: authService,
@@ -18,23 +18,28 @@ export class SigninComponent {
     private toastr: toastService
   ) {}
 
-  async onSignin() {
-    try {
-      const user = await this.authService.signin({
+  onSignin() {
+    this.authService
+      .signIn({
         email: this.email,
         password: this.password,
-      });
+      })
+      .subscribe((response) => {
+        if (response && response.success) {
+          const currentUser = this.authService.currentUserValue;
+          console.log(currentUser);
 
-      if (user.role == 1) {
-        this.router.navigate(['/admin-dashboard']);
-        this.toastr.success('Login successfully!', 'Admin Dashboard');
-      } else if (user.role == 0) {
-        this.router.navigate(['/user-dashboard']);
-        this.toastr.success('Login successfully!', 'User Dashboard');
-      }
-    } catch (error) {
-      this.toastr.error('Invalid email or password!', 'Login Failed');
-    }
+          if (currentUser.role === 'admin') {
+            this.toastr.success('Login successfully', 'Admin');
+            this.router.navigate(['/admin-dashboard']);
+          } else if (currentUser.role === 'user') {
+            this.toastr.success('Login sucessfully', 'User');
+            this.router.navigate(['/user-dashboard']);
+          }
+        } else {
+          this.toastr.error('Login Failed', 'Nofitication');
+        }
+      });
   }
 
   goToSignup() {

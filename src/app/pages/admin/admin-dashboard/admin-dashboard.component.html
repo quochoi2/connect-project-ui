@@ -36,99 +36,172 @@
     </div>
   </div>
 
-  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-    <ng-container matColumnDef="idFirst">
-      <th mat-header-cell *matHeaderCellDef>First IP</th>
-      <td mat-cell *matCellDef="let element" class="truncate-note">
-        <span matTooltip="{{ element.idFirst }}">{{ element.idFirst }}</span>
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="portSource">
-      <th mat-header-cell *matHeaderCellDef>Port Source</th>
-      <td mat-cell *matCellDef="let element" class="truncate-note">
-        <span matTooltip="{{ element.portSource }}">{{
-          element.portSource
-        }}</span>
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="idLast">
-      <th mat-header-cell *matHeaderCellDef>Last IP</th>
-      <td mat-cell *matCellDef="let element" class="truncate-note">
-        <span matTooltip="{{ element.idLast }}">{{ element.idLast }}</span>
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="portTo">
-      <th mat-header-cell *matHeaderCellDef>Port To</th>
-      <td mat-cell *matCellDef="let element" class="truncate-note">
-        <span matTooltip="{{ element.portTo }}">{{ element.portTo }}</span>
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="pending">
-      <th mat-header-cell *matHeaderCellDef>Pending</th>
-      <td mat-cell *matCellDef="let element" class="">
-        <fa-icon
-          class="ml-[20px]"
-          [icon]="
-            element.pending === 1
-              ? faService.icons.faEyeSlash
-              : faService.icons.faEye
-          "
+  <div class="overflow-x-auto">
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+      <ng-container matColumnDef="idFirst">
+        <th mat-header-cell *matHeaderCellDef>First IP</th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          class="truncate-note"
+          style="padding: 10px"
         >
-        </fa-icon>
-      </td>
-    </ng-container>
+          <span matTooltip="{{ element.idFirst }}">{{ element.idFirst }}</span>
+        </td>
+      </ng-container>
 
-    <ng-container matColumnDef="moderator">
-      <th mat-header-cell *matHeaderCellDef>Moderator</th>
-      <td mat-cell *matCellDef="let element" class="truncate-note">
-        <span matTooltip="{{ element.moderator }}">{{
-          element.moderator
-        }}</span>
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="note">
-      <th mat-header-cell *matHeaderCellDef>Note</th>
-      <td mat-cell *matCellDef="let element" class="truncate-note">
-        <span matTooltip="{{ element.note }}">{{ element.note }}</span>
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="updatedAt">
-      <th mat-header-cell *matHeaderCellDef>Date Time</th>
-      <td mat-cell *matCellDef="let element">
-        {{ element.updatedAt | date : "short" }}
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="actions">
-      <th mat-header-cell *matHeaderCellDef>Actions</th>
-      <td mat-cell *matCellDef="let element">
-        <button
-          *ngIf="element.pending === 1"
-          class="text-blue-600 hover:underline"
-          (click)="handleOpenAndCloseConnect(element, 'open')"
+      <ng-container matColumnDef="portSource">
+        <th mat-header-cell *matHeaderCellDef>Port Source</th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          class="truncate-note"
+          style="padding: 10px"
         >
-          Open
-        </button>
+          <span matTooltip="{{ element.portSource }}">{{
+            element.portSource
+          }}</span>
+        </td>
+      </ng-container>
 
-        <button
-          *ngIf="element.pending === 0"
-          class="text-red-600 hover:underline"
-          (click)="handleOpenAndCloseConnect(element, 'close')"
+      <ng-container matColumnDef="idLast">
+        <th mat-header-cell *matHeaderCellDef>Last IP</th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          class="truncate-note"
+          style="padding: 10px"
         >
-          Close
-        </button>
-      </td>
-    </ng-container>
+          <span matTooltip="{{ element.idLast }}">{{ element.idLast }}</span>
+        </td>
+      </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-  </table>
+      <ng-container matColumnDef="portTo">
+        <th mat-header-cell *matHeaderCellDef>Port To</th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          class="truncate-note"
+          style="padding: 10px"
+        >
+          <span matTooltip="{{ element.portTo }}">{{ element.portTo }}</span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="serviceType">
+        <th mat-header-cell *matHeaderCellDef>Service Type</th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          class="truncate-note"
+          style="padding: 10px"
+        >
+          <span matTooltip="{{ element.serviceType }}">{{
+            element.serviceType
+          }}</span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="connectType">
+        <th mat-header-cell *matHeaderCellDef>Connect Type</th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          class="truncate-note"
+          style="padding: 10px"
+        >
+          <span matTooltip="{{ element.connectType }}">{{
+            element.connectType
+          }}</span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="username">
+        <th mat-header-cell *matHeaderCellDef>Member</th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          class="truncate-note"
+          style="padding: 10px"
+        >
+          <span matTooltip="{{ element.username }}">{{
+            element.username
+          }}</span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="duration">
+        <th mat-header-cell *matHeaderCellDef>Duration</th>
+        <td mat-cell *matCellDef="let element" style="padding: 10px">
+          {{ element.duration }} minutes
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef>Status</th>
+        <td mat-cell *matCellDef="let element" style="padding: 10px">
+          <span
+            [ngClass]="{
+              'bg-green-500': element.status == 0,
+              'bg-red-500': element.status == 1,
+              'bg-yellow-500': element.status == 2,
+            }"
+            class="text-white py-1 px-3 rounded-full"
+          >
+            {{
+              element.status === 0
+                ? "Opened"
+                : element.status === 1
+                ? "Closed"
+                : "Pending"
+            }}
+          </span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="note">
+        <th mat-header-cell *matHeaderCellDef>Note</th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          class="truncate-note"
+          style="padding: 10px"
+        >
+          <span matTooltip="{{ element.note }}">{{ element.note }}</span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="updatedAt">
+        <th mat-header-cell *matHeaderCellDef>Date Time</th>
+        <td mat-cell *matCellDef="let element" style="padding: 10px">
+          {{ element.updatedAt | date : "short" }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let element" style="padding: 10px">
+          <button
+            *ngIf="element.status === 1 || element.status === 2"
+            class="text-blue-600 hover:underline"
+            (click)="handleOpenAndCloseConnect(element, 'open')"
+          >
+            Open
+          </button>
+          <button
+            *ngIf="element.status === 0"
+            class="text-red-600 hover:underline"
+            (click)="handleOpenAndCloseConnect(element, 'close')"
+          >
+            Close
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </div>
 
   <mat-paginator
     [length]="totalItems"

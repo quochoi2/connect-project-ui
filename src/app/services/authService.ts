@@ -1,50 +1,77 @@
 import { Injectable } from '@angular/core';
 import axios from 'axios';
 import { environment } from '../../environments/environment';
+import { BehaviorSubject, Observable, map, from } from 'rxjs';
+
+const API_URL = environment.BASE_URL + '/auth';
 
 @Injectable({
   providedIn: 'root',
 })
 export class authService {
-  private signinEndpoint = `${environment.BASE_URL}/user/signin`;
-  private signupEndpoint = `${environment.BASE_URL}/user/signup`;
+  public currentUser: Observable<any>;
+  private currentUserSubject: BehaviorSubject<any>;
 
-  constructor() {}
-
-  async signin(credentials: { email: string; password: string }) {
-    try {
-      const response = await axios.post(this.signinEndpoint, credentials);
-      localStorage.setItem(
-        'user',
-        JSON.stringify({
-          id: response.data.id,
-          name: response.data.name,
-          role: response.data.role,
-        })
-      );
-      return response.data;
-    } catch (error) {
-      console.error('Error during signin:', error);
-      throw error;
+  constructor() {
+    let storageUser;
+    const storageUserAsStr = localStorage.getItem('user');
+    if (storageUserAsStr) {
+      storageUser = JSON.parse(storageUserAsStr);
     }
+
+    this.currentUserSubject = new BehaviorSubject<any>(storageUser);
+    this.currentUser = this.currentUserSubject.asObservable();
   }
 
-  async signup(data: { name: string; email: string; password: string }) {
-    try {
-      const response = await axios.post(this.signupEndpoint, data);
-      return response.data;
-    } catch (error) {
-      console.error('Error during signup:', error);
-      throw error;
-    }
+  public get currentUserValue() {
+    return this.currentUserSubject.value;
   }
 
-  logout(): void {
-    localStorage.removeItem('user');
+  signIn(user: any): Observable<any> {
+    return from(
+      axios.post(API_URL + '/signin', {
+        email: user.email,
+        password: user.password,
+      })
+    ).pipe(
+      map((res: any) => {
+        const data = res.data;
+        if (data && data.success) {
+          localStorage.setItem('token', data.data.token.accessToken);
+
+          const payload = data.data.token.accessToken.split('.')[1];
+          const decodedPayload = JSON.parse(atob(payload));
+          console.log(decodedPayload);
+
+          const dataUser = {
+            id: decodedPayload.userId,
+            name: decodedPayload.name,
+            email: decodedPayload.email,
+            role: decodedPayload.role,
+          };
+          localStorage.setItem('user', JSON.stringify(dataUser));
+          this.currentUserSubject.next(dataUser);
+        }
+        return data;
+      })
+    );
   }
 
-  getUser(): any {
-    const user = localStorage.getItem('user');
-    return user ? JSON.parse(user) : null;
+  signUp(user: any): Observable<any> {
+    return from(axios.post(API_URL + '/signup', user));
   }
+
+  signOut() {
+    localStorage.clear();
+    this.currentUserSubject.next(null);
+  }
+
+  isLoggedIn(): boolean {
+    return this.currentUserSubject.value !== null;
+  }
+
+  // getUser(): any {
+  //   const user = localStorage.getItem('user');
+  //   return user ? user : null;
+  // }
 }

@@ -21,7 +21,7 @@ export class SignupComponent {
 
   async onSignup() {
     try {
-      const user = await this.authService.signup({
+      const user = await this.authService.signUp({
         name: this.name,
         email: this.email,
         password: this.password,

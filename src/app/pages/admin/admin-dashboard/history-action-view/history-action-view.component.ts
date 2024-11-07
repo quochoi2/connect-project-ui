@@ -3,9 +3,9 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import { IConnectAdminHistory } from '../../../../models/connect-admin';
-import { connectService } from '../../../../services/connectService';
+import { connectService } from '../../../../services/pageService/connectService';
 import { authService } from '../../../../services/authService';
-import { historyService } from '../../../../services/historyService';
+import { historyService } from '../../../../services/pageService/historyService';
 
 @Component({
   selector: 'app-history-action-view',

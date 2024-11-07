@@ -9,8 +9,8 @@ import { Router } from '@angular/router';
 })
 export class DefaultLayoutComponent {
   constructor(private authService: authService, private router: Router) {}
-  logOut() {
-    this.authService.logout();
+  signOut() {
+    this.authService.signOut();
     this.router.navigate(['/sign-in']);
   }
 }

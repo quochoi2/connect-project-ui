@@ -3,6 +3,7 @@
 </h2>
 <mat-dialog-content class="w-full">
   <form class="grid gap-4 grid-cols-1 md:grid-cols-2">
+    <!-- First IP -->
     <mat-form-field class="w-full">
       <mat-label>First IP</mat-label>
       <input
@@ -13,7 +14,8 @@
       />
     </mat-form-field>
 
-    <mat-form-field>
+    <!-- Port Source -->
+    <mat-form-field class="w-full">
       <mat-label>Port Source</mat-label>
       <input
         matInput
@@ -23,16 +25,67 @@
       />
     </mat-form-field>
 
-    <mat-form-field>
+    <!-- Last IP -->
+    <mat-form-field class="w-full">
       <mat-label>Last IP</mat-label>
       <input matInput [(ngModel)]="connectData.idLast" name="idLast" required />
     </mat-form-field>
 
-    <mat-form-field>
+    <!-- Port To -->
+    <mat-form-field class="w-full">
       <mat-label>Port To</mat-label>
       <input matInput [(ngModel)]="connectData.portTo" name="portTo" required />
     </mat-form-field>
 
+    <!-- Service Type (Select) -->
+    <mat-form-field class="w-full md:col-span-2">
+      <mat-label>Service Type</mat-label>
+      <mat-select
+        [(ngModel)]="connectData.serviceType"
+        name="serviceType"
+        required
+      >
+        <mat-option *ngFor="let service of serviceTypes" [value]="service">
+          {{ service }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Connect Type (Select) -->
+    <mat-form-field class="w-full md:col-span-2">
+      <mat-label>Connect Type</mat-label>
+      <mat-select
+        [(ngModel)]="connectData.connectType"
+        name="connectType"
+        required
+      >
+        <mat-option *ngFor="let connect of connectTypes" [value]="connect">
+          {{ connect }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Moderator (Select) -->
+    <mat-form-field class="w-full md:col-span-2">
+      <mat-label>Moderator</mat-label>
+      <mat-select [(ngModel)]="connectData.moderator" name="moderator" required>
+        <mat-option *ngFor="let mod of moderators" [value]="mod">
+          {{ mod }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Duration (Select) -->
+    <mat-form-field class="w-full md:col-span-2">
+      <mat-label>Duration</mat-label>
+      <mat-select [(ngModel)]="connectData.duration" name="duration" required>
+        <mat-option *ngFor="let duration of durations" [value]="duration.value">
+          {{ duration.view }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Note -->
     <mat-form-field class="w-full md:col-span-2">
       <mat-label>Note</mat-label>
       <textarea
