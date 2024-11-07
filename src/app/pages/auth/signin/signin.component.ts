@@ -31,10 +31,12 @@ export class SigninComponent {
 
           if (currentUser.role === 'admin') {
             this.toastr.success('Login successfully', 'Admin');
-            this.router.navigate(['/admin-dashboard']);
+            // this.router.navigate(['/admin-dashboard']);
+            window.location.replace('/admin-dashboard');
           } else if (currentUser.role === 'user') {
             this.toastr.success('Login sucessfully', 'User');
-            this.router.navigate(['/user-dashboard']);
+            // this.router.navigate(['/user-dashboard']);
+            window.location.replace('/user-dashboard');
           }
         } else {
           this.toastr.error('Login Failed', 'Nofitication');

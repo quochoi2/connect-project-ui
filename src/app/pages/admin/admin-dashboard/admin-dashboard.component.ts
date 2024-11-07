@@ -22,7 +22,6 @@ export class AdminDashboardComponent {
   constructor(
     public faService: FontAwesomeService,
     private connectService: connectService,
-    private historyService: historyService,
     private authService: authService,
     private router: Router,
     private toastr: toastService
@@ -59,7 +58,7 @@ export class AdminDashboardComponent {
 
   loadConnects(page: number, limit: number) {
     this.connectService
-      .getAllConnects(page, limit)
+      .getAllConnects(page, limit, this.authService.currentUserValue.name)
       .then((response: any) => {
         this.currentPage = page;
         this.dataSource.data = response.data;

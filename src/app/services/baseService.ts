@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, map, from } from 'rxjs';
-import axios, { AxiosRequestConfig, AxiosInstance } from 'axios';
+import axios, { AxiosRequestConfig, AxiosInstance, AxiosError } from 'axios';
 import { authService } from './authService';
 import { environment } from '../../environments/environment';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -34,6 +35,20 @@ export class BaseService extends BehaviorSubject<any> {
         return Promise.reject(error);
       }
     );
+
+    this.api.interceptors.response.use(
+      (response) => response,
+      (error: AxiosError) => {
+        if (error.response?.status === 401) {
+          this.authService.signOut();
+        }
+        return Promise.reject(error);
+      }
+    );
+  }
+
+  protected getAllRepository<T>(url: string): Promise<T> {
+    return this.api.get<T>(url).then((res) => res.data);
   }
 
   protected paginateRepository<T>(url: string, params?: any): Promise<T> {

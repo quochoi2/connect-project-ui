@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import axios from 'axios';
 import { environment } from '../../environments/environment';
 import { BehaviorSubject, Observable, map, from } from 'rxjs';
+import { Router } from '@angular/router';
 
 const API_URL = environment.BASE_URL + '/auth';
 
@@ -12,7 +13,7 @@ export class authService {
   public currentUser: Observable<any>;
   private currentUserSubject: BehaviorSubject<any>;
 
-  constructor() {
+  constructor(private router: Router) {
     let storageUser;
     const storageUserAsStr = localStorage.getItem('user');
     if (storageUserAsStr) {
@@ -64,6 +65,8 @@ export class authService {
   signOut() {
     localStorage.clear();
     this.currentUserSubject.next(null);
+    // this.router.navigate(['/sign-in']);
+    window.location.replace('/sign-in');
   }
 
   isLoggedIn(): boolean {

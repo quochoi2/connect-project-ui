@@ -7,6 +7,7 @@ import {
   NavigationError,
 } from '@angular/router';
 import { filter } from 'rxjs/operators';
+import { authService } from './services/authService';
 
 @Component({
   selector: 'app-root',
@@ -42,5 +43,12 @@ export class AppComponent {
           this.isLoading = false;
         }
       });
+  }
+
+  ngOnInit(): void {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      this.router.navigate(['/sign-in']);
+    }
   }
 }

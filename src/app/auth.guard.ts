@@ -33,7 +33,16 @@ export class AuthGuard implements CanActivate {
       return true;
     }
 
-    this.router.navigate(['/sign-in']);
-    return false;
+    const token = localStorage.getItem('token');
+    if (token) {
+      const currentUser = this.authService.currentUserValue;
+      if (currentUser.role === 'admin') {
+        this.router.navigate(['/admin-dashboard']);
+      } else if (currentUser.role === 'user') {
+        this.router.navigate(['/user-dashboard']);
+      }
+      return false;
+    }
+    return true;
   }
 }

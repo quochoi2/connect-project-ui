@@ -18,8 +18,8 @@ export class connectService extends BaseService {
   }
 
   // admin
-  public getAllConnects(page: number, limit: number) {
-    return this.paginateRepository('/connect', { page, limit });
+  public getAllConnects(page: number, limit: number, adminName: string) {
+    return this.paginateRepository('/connect', { page, limit, adminName });
   }
 
   public openConnect(id: number) {

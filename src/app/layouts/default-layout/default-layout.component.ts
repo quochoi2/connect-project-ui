@@ -11,6 +11,5 @@ export class DefaultLayoutComponent {
   constructor(private authService: authService, private router: Router) {}
   signOut() {
     this.authService.signOut();
-    this.router.navigate(['/sign-in']);
   }
 }

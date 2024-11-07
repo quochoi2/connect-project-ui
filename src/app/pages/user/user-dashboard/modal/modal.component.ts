@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { toastService } from '../../../../shared/toast';
 import { MatSelectModule } from '@angular/material/select';
 import { CommonModule } from '@angular/common';
+import { userService } from '../../../../services/pageService/userService';
 
 @Component({
   selector: 'app-modal',
@@ -45,7 +46,7 @@ export class ModalComponent {
       view: 'Ket noi 10 phut',
     },
   ];
-  moderators: string[] = ['Nguyen Van A', 'Tran Thi B', 'Le Hoang C'];
+  moderators: string[] = [];
 
   connectData: any = {
     idFirst: '',
@@ -71,11 +72,25 @@ export class ModalComponent {
     @Inject(MAT_DIALOG_DATA) public data: { element?: IConnectAdmin },
     private connectService: connectService,
     private authService: authService,
-    private toastr: toastService
+    private toastr: toastService,
+    private userService: userService
   ) {
     if (data.element) {
       this.connectData = { ...data.element };
       this.isEditMode = true;
+    }
+  }
+
+  ngOnInit() {
+    this.loadAdminUsers();
+  }
+
+  async loadAdminUsers() {
+    try {
+      const adminUsers = await this.userService.getUsersWithAdminRole();
+      this.moderators = adminUsers.map((user: any) => user.name);
+    } catch (error) {
+      this.toastr.error('Failed to load admin users', 'Error');
     }
   }
 

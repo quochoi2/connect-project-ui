@@ -5,3 +5,9 @@ export interface IUser {
   password: string;
   role: number;
 }
+
+export interface UsersWithAdminRole {
+  name: string;
+  id: number;
+  role: string;
+}
