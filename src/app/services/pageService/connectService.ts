@@ -1,6 +1,4 @@
 import { Injectable } from '@angular/core';
-import axios from 'axios';
-import { environment } from '../../../environments/environment';
 import { authService } from '../authService';
 import { BaseService } from '../baseService';
 
